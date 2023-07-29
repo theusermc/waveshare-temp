@@ -14,8 +14,9 @@ if __name__ == "__main__":
     while True:
         celsius, fahrenheit = get_cpu_temperature()
         if celsius is not None and fahrenheit is not None:
-            print(f"CPU Temperature (Celsius): {celsius:.2f} °C")
-            print(f"CPU Temperature (Fahrenheit): {fahrenheit:.2f} °F")
+            print(f"CPU Temperature: {celsius:.2f} °C / {fahrenheit:.2f} °F")
+            print("")
+            
         else:
             print("Failed to read CPU temperature.")
         
