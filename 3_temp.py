@@ -40,7 +40,7 @@ try:
         celsius, fahrenheit = get_cpu_temperature()
 
         # Update the temperature values only
-        draw.rectangle((10, 40, 240, 90), fill=255)  # Clear previous temperature values
+        draw.rectangle((10, 40, 250, 90), fill=255)  # Clear previous temperature values
         if celsius is not None and fahrenheit is not None:
             draw.text((10, 40), f"{celsius:.2f} °C", font=font24, fill=0)
             draw.text((10, 70), f"{fahrenheit:.2f} °F", font=font24, fill=0)
