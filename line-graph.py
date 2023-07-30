@@ -59,9 +59,9 @@ try:
         celsius = get_cpu_temperature()
 
         # Update the temperature values
-        draw.rectangle((10, 40, 250, 90), fill=255)  # Clear previous temperature values
+        draw.rectangle((0, 0, 250, 90), fill=255)  # Clear previous temperature values
         if celsius is not None:
-            draw.text((10, 40), f"{celsius:.2f} °C", font=font24, fill=0)
+            draw.text((10, 10), f"{celsius:.2f} °C", font=font24, fill=0)
             data_points.append(celsius)  # Add new temperature data point to the list
         else:
             draw.text((10, 40), "get cpu temperature failure", font=font24, fill=0)
