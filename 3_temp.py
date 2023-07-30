@@ -28,6 +28,7 @@ try:
 
     # Drawing on the image
     font24 = ImageFont.truetype(os.path.join(picdir, 'trebuc.ttf'), 24)
+    font18 = ImageFont.truetype(os.path.join(picdir, 'trebuc.ttf'), 18)
 
     logging.info("Displaying CPU temperature...")
 
