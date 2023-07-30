@@ -33,37 +33,23 @@ try:
 
     logging.info("Displaying CPU temperature...")
 
-    # Create image buffer for the static part
-    static_image = Image.new('1', (epd.height, epd.width), 255)
-    static_draw = ImageDraw.Draw(static_image)
-
-    # Draw the static part (CPU Temperature label) only once
-    static_draw.text((10, 10), "CPU Temperature:", font=font24, fill=0)
-    epd.displayPartial(epd.getbuffer(static_image))
-
     while True:
         celsius, fahrenheit = get_cpu_temperature()
 
-        # Create image buffer for the dynamic part
-        dynamic_image = Image.new('1', (epd.height, epd.width), 255)
-        dynamic_draw = ImageDraw.Draw(dynamic_image)
+        # Create image buffer
+        image = Image.new('1', (epd.height, epd.width), 255)
+        draw = ImageDraw.Draw(image)
 
-        # Clear the dynamic part of the image
-        dynamic_draw.rectangle((10, 40, 250, 122), fill=255)
-
+        # Draw the label and temperature values on the same layer
         if celsius is not None and fahrenheit is not None:
-            dynamic_draw.text((10, 40), f"{celsius:.2f} °C", font=font24, fill=0)
-            dynamic_draw.text((10, 70), f"{fahrenheit:.2f} °F", font=font24, fill=0)
+            draw.text((10, 10), "CPU Temperature:", font=font24, fill=0)
+            draw.text((10, 40), f"{celsius:.2f} °C", font=font24, fill=0)
+            draw.text((10, 70), f"{fahrenheit:.2f} °F", font=font24, fill=0)
         else:
-            dynamic_draw.text((10, 40), "Failed to read CPU temperature.", font=font24, fill=0)
+            draw.text((10, 40), "Failed to read CPU temperature.", font=font24, fill=0)
 
-        # Combine static and dynamic parts of the image
-        combined_image = Image.new('1', (epd.height, epd.width), 255)
-        combined_image.paste(static_image, (0, 0))
-        combined_image.paste(dynamic_image, (0, 0))
-
-        # Display only the dynamic part of the image
-        epd.displayPartial(epd.getbuffer(combined_image))
+        # Display the image
+        epd.display(epd.getbuffer(image))
         time.sleep(2)
 
 except IOError as e:
