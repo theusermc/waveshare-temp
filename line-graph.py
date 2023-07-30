@@ -12,10 +12,9 @@ def get_cpu_temperature():
     try:
         output = subprocess.check_output(['vcgencmd', 'measure_temp']).decode('utf-8')
         temperature_celsius = float(output.split('=')[1].split('\'')[0])
-        temperature_fahrenheit = (temperature_celsius * 9/5) + 32
-        return temperature_celsius, temperature_fahrenheit
+        return temperature_celsius
     except subprocess.CalledProcessError:
-        return None, None
+        return None
 
 def draw_line_graph(image_draw, data_points, max_data_points):
     graph_width = 240
@@ -36,7 +35,7 @@ def draw_line_graph(image_draw, data_points, max_data_points):
     return data_points
 
 try:
-    logging.info("epd2in13_V3 Clock and CPU Temperature with Line Graph")
+    logging.info("epd2in13_V3 CPU Temperature Line Graph")
 
     epd = epd2in13_V3.EPD()
     logging.info("init and clear")
@@ -45,9 +44,8 @@ try:
 
     # Drawing on the image
     font24 = ImageFont.truetype(os.path.join(picdir, 'trebuc.ttf'), 24)
-    font16 = ImageFont.truetype(os.path.join(picdir, 'trebuc.ttf'), 16)
 
-    logging.info("Displaying Clock, CPU Temperature, and Line Graph...")
+    logging.info("Displaying CPU Temperature Line Graph...")
 
     # Create initial image buffer
     image = Image.new('1', (epd.height, epd.width), 255)
@@ -58,14 +56,12 @@ try:
     max_data_points = 60  # Display the last 60 data points
 
     while True:
-        current_time = time.strftime('%l:%M:%S %p').lstrip().lower()
-        celsius, fahrenheit = get_cpu_temperature()
+        celsius = get_cpu_temperature()
 
         # Update the temperature values
         draw.rectangle((10, 40, 250, 90), fill=255)  # Clear previous temperature values
-        if celsius is not None and fahrenheit is not None:
+        if celsius is not None:
             draw.text((10, 40), f"{celsius:.2f} °C", font=font24, fill=0)
-            draw.text((10, 70), f"{fahrenheit:.2f} °F", font=font24, fill=0)
             data_points.append(celsius)  # Add new temperature data point to the list
         else:
             draw.text((10, 40), "get cpu temperature failure", font=font24, fill=0)
