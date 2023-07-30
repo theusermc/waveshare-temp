@@ -60,6 +60,7 @@ try:
 
         # Update the temperature values
         draw.rectangle((0, 0, 80, 120), fill=255)  # Clear previous temperature values
+        draw.point((80, 120), fill=0) # making sure the temp label has enough clearance
         if celsius is not None:
             draw.text((10, 10), f"{celsius:.2f} °C", font=font24, fill=0)
             data_points.append(celsius)  # Add new temperature data point to the list
