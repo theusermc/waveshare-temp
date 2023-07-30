@@ -19,9 +19,10 @@ def get_cpu_temperature():
 
 try:
     logging.info("epd2in13_V3 CPU Temperature")
+    logging.critical("have you prayed today?")
 
     epd = epd2in13_V3.EPD()
-    logging.info("init and Clear")
+    logging.info("init and clear")
     epd.init()
     epd.Clear(0xFF)
 
@@ -34,7 +35,6 @@ try:
     image = Image.new('1', (epd.height, epd.width), 255)
     draw = ImageDraw.Draw(image)
     draw.text((10, 10), "CPU Temperature:", font=font24, fill=0)
-    draw.text((10, 40), "Initializing...", font=font24, fill=0)
 
     while True:
         celsius, fahrenheit = get_cpu_temperature()
@@ -44,8 +44,11 @@ try:
         if celsius is not None and fahrenheit is not None:
             draw.text((10, 40), f"{celsius:.2f} °C", font=font24, fill=0)
             draw.text((10, 70), f"{fahrenheit:.2f} °F", font=font24, fill=0)
+            print(f"current temps: {celsius:.2f} °C / {fahrenheit:.2f} °F")
         else:
-            draw.text((10, 40), "Failed to read CPU temperature.", font=font24, fill=0)
+            draw.text((10, 40), "get cpu temperature failure", font=font24, fill=0)
+            logging.error("CPU temperature get failure")
+            logging.error("if this persists, do something lmao")
 
         # Display the partially updated image
         epd.displayPartial(epd.getbuffer(image))
