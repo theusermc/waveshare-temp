@@ -35,13 +35,13 @@ try:
     # Create initial image buffer and draw the static content
     image = Image.new('1', (epd.height, epd.width), 255)
     draw = ImageDraw.Draw(image)
-    draw.text((10, 10), "CPU Temperature:", font=font24, fill=0)
 
     while True:
         celsius, fahrenheit = get_cpu_temperature()
 
         # Update the temperature values only
-        draw.rectangle((10, 40, 250, 90), fill=255)  # Clear previous temperature values
+        draw.rectangle((0, 0, 250, 122), fill=255)  # Clear previous content
+        draw.text((10, 10), "CPU Temperature:", font=font24, fill=0)
         if celsius is not None and fahrenheit is not None:
             draw.text((10, 40), f"{celsius:.2f} °C", font=font24, fill=0)
             draw.text((10, 70), f"{fahrenheit:.2f} °F", font=font24, fill=0)
@@ -51,8 +51,9 @@ try:
             logging.error("CPU temperature get failure")
             logging.error("if this persists, do something lmao")
 
-        # Display the partially updated image
-        epd.displayPartial(epd.getbuffer(image))
+        # Display the partially updated image (rotated by 180 degrees)
+        rotated_image = image.rotate(180)
+        epd.displayPartial(epd.getbuffer(rotated_image))
 
         time.sleep(2)
 
