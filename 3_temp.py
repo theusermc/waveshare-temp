@@ -45,10 +45,10 @@ try:
             draw.text((10, 40), f"{celsius:.2f} °C", font=font24, fill=0)
             draw.text((10, 70), f"{fahrenheit:.2f} °F", font=font24, fill=0)
             print(f"current temps: {celsius:.2f} °C / {fahrenheit:.2f} °F")
-        else:
-            draw.text((10, 40), "get cpu temperature failure", font=font24, fill=0)
-            logging.error("CPU temperature get failure")
-            logging.error("if this persists, do something lmao")
+        #else:
+            #draw.text((10, 40), "get cpu temperature failure", font=font24, fill=0)
+            #logging.error("CPU temperature get failure")
+            #logging.error("if this persists, do something lmao")
 
         # Display the partially updated image
         epd.displayPartial(epd.getbuffer(image))
