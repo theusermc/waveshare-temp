@@ -1,14 +1,11 @@
 import subprocess
 import time
-import sys
 import os
 import logging
 import epd2in13_V3
 from PIL import Image, ImageDraw, ImageFont
 
-# Define the directory where the script and font file are located
 picdir = os.path.dirname(os.path.realpath(__file__))
-
 logging.basicConfig(level=logging.DEBUG)
 
 def get_cpu_temperature():
@@ -33,23 +30,26 @@ try:
 
     logging.info("Displaying CPU temperature...")
 
+    # Create initial image buffer and draw the static content
+    image = Image.new('1', (epd.height, epd.width), 255)
+    draw = ImageDraw.Draw(image)
+    draw.text((10, 10), "CPU Temperature:", font=font24, fill=0)
+    draw.text((10, 40), "Initializing...", font=font24, fill=0)
+
     while True:
         celsius, fahrenheit = get_cpu_temperature()
 
-        # Create image buffer
-        image = Image.new('1', (epd.height, epd.width), 255)
-        draw = ImageDraw.Draw(image)
-
-        # Draw the label and temperature values on the same layer
+        # Update the temperature values only
+        draw.rectangle((10, 40, 240, 90), fill=255)  # Clear previous temperature values
         if celsius is not None and fahrenheit is not None:
-            draw.text((10, 10), "CPU Temperature:", font=font24, fill=0)
             draw.text((10, 40), f"{celsius:.2f} °C", font=font24, fill=0)
             draw.text((10, 70), f"{fahrenheit:.2f} °F", font=font24, fill=0)
         else:
             draw.text((10, 40), "Failed to read CPU temperature.", font=font24, fill=0)
 
-        # Display the image
-        epd.display(epd.getbuffer(image))
+        # Display the partially updated image
+        epd.displayPartial(epd.getbuffer(image))
+
         time.sleep(2)
 
 except IOError as e:
