@@ -49,7 +49,7 @@ try:
         dynamic_draw = ImageDraw.Draw(dynamic_image)
 
         # Clear the dynamic part of the image
-        dynamic_draw.rectangle((0, 40, 250, 122), fill=255)
+        dynamic_draw.rectangle((10, 40, 250, 122), fill=255)
 
         if celsius is not None and fahrenheit is not None:
             dynamic_draw.text((10, 40), f"{celsius:.2f} °C", font=font24, fill=0)
