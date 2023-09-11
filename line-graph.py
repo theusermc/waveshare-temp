@@ -66,6 +66,7 @@ try:
             data_points.append(celsius)  # Add new temperature data point to the list
         else:
             logging.critical("do something, it broke")
+            logging.critical("if its bad make a issue")
 
         # Update the line graph
         draw.rectangle((0, 120, 250, 220), fill=255)  # Clear previous graph
